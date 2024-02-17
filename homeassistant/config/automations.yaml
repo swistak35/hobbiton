@@ -1,0 +1,71 @@
+- id: '1707650979263'
+  alias: Koniec prania
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.wtyczka_do_pralki_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+    below: 3
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_g780g
+    metadata: {}
+    data:
+      message: "Pranie \U0001F970"
+  - service: notify.mobile_app_sm_g970f
+    metadata: {}
+    data:
+      message: "Pranie \U0001F970"
+  mode: single
+- id: '1707755839697'
+  alias: Powiadomienie jak Rafal wychodzi z domu
+  description: ''
+  use_blueprint:
+    path: homeassistant/notify_leaving_zone.yaml
+    input:
+      person_entity: person.rafal
+      zone_entity: zone.home
+      notify_device: 60d289e8a185f53746d694b216b4808b
+- id: '1707755894810'
+  alias: Powiedomienie rafal wchodzi
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.rafal
+    zone: zone.home
+    event: enter
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_g780g
+    metadata: {}
+    data:
+      message: Rafal przychodzi do domu
+  mode: single
+- id: '1707756053365'
+  alias: Pow rafal wchodzi do przedszkola
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.rafal
+    zone: zone.przedszkole
+    event: enter
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_g780g
+    metadata: {}
+    data:
+      message: Rafal wchodzi do przedszkola
+  mode: single
+- id: '1707756092607'
+  alias: Pow rafal wychodzi z przedszkola
+  description: ''
+  use_blueprint:
+    path: homeassistant/notify_leaving_zone.yaml
+    input:
+      person_entity: person.rafal
+      zone_entity: zone.przedszkole
+      notify_device: 60d289e8a185f53746d694b216b4808b

@@ -1,0 +1,109 @@
+- id: '1707650786399'
+  name: Wieczorne czytanie bajek
+  entities:
+    light.mibedsidelamp2_9c3d:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 127.5
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 27
+      - 44
+      rgb_color:
+      - 255
+      - 193
+      - 142
+      xy_color:
+      - 0.452
+      - 0.373
+      friendly_name: MiBedsideLamp2-9C3D
+      supported_features: 0
+      state: 'on'
+  metadata: {}
+- id: '1707651222600'
+  name: Pokoj Lusi - off
+  entities:
+    light.mibedsidelamp2_9c3d:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      friendly_name: MiBedsideLamp2-9C3D
+      supported_features: 0
+      state: 'off'
+  metadata: {}
+- id: '1707661303106'
+  name: Pokoj Lusi - spanie
+  entities:
+    light.mibedsidelamp2_9c3d:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 2.55
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 27
+      - 44
+      rgb_color:
+      - 255
+      - 193
+      - 142
+      xy_color:
+      - 0.452
+      - 0.373
+      friendly_name: MiBedsideLamp2-9C3D
+      supported_features: 0
+      state: 'on'
+  metadata: {}
+- id: '1707911899115'
+  name: Łusia spanie
+  entities:
+    light.mibedsidelamp2_9c3d:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 2.55
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 27
+      - 44
+      rgb_color:
+      - 255
+      - 193
+      - 142
+      xy_color:
+      - 0.452
+      - 0.373
+      friendly_name: MiBedsideLamp2-9C3D
+      supported_features: 0
+      state: 'on'
+  metadata: {}
