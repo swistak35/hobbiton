@@ -1,0 +1,109 @@
+poranna_pobudka:
+  alias: Poranna pobudka
+  sequence:
+  - service: media_player.select_source
+    data:
+      source: Kuchnia
+    target:
+      entity_id: media_player.spotify_rafal_lasocha
+    enabled: true
+  - service: media_player.play_media
+    metadata: {}
+    data:
+      media_content_id: https://open.spotify.com/playlist/5xddIVAtLrZKtt4YGLM1SQ?si=YcvRqaKNTxOi043Qn4LYkg
+      media_content_type: playlist
+    target:
+      entity_id: media_player.spotify_rafal_lasocha
+    enabled: false
+  mode: single
+gadanie:
+  alias: Status wieczorny
+  sequence:
+  - service: tts.speak
+    target:
+      entity_id: tts.google_pl_pl
+    data:
+      media_player_entity_id: media_player.mi_smart_speaker0956
+      message: "Drzwi do pokoju Łucji {% if is_state('binary_sensor.czujnik_otwarcia_drzwi_opening_3',
+        'on') %} są otwarte {% else %} są zamknięte {% endif %}.\nW pokoju Łucji jest
+        {{states('sensor.temperatura1_temperature')}} stopni. {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
+        'on') or is_state('binary_sensor.ewelink_ds01_opening_2', 'on') or is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
+        'on') %}\n  Okna {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
+        'on') %} w sypialni, {% endif %} {% if is_state('binary_sensor.ewelink_ds01_opening_2',
+        'on') %} u Łusi, {% endif %} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
+        'on') %} w salonie, {% endif %} są otwarte.\n{% else %}\n  Okna są pozamykane.\n{%
+        endif %}\nDobranoc."
+  mode: single
+  description: ''
+poranny_status:
+  alias: Status poranny
+  sequence:
+  - service: calendar.get_events
+    metadata: {}
+    data:
+      duration:
+        hours: 23
+        minutes: 59
+        seconds: 59
+      start_date_time: '{{ today_at().strftime(''%Y-%m-%d %H:%M'') }}'
+    response_variable: today_agenda
+    target:
+      label_id: kalendarze
+  - service: tts.speak
+    target:
+      entity_id: tts.google_pl_pl
+    data:
+      media_player_entity_id: media_player.googlehome5990
+      message: "Dzisiejsze wydarzenia: {% for event in today_agenda[\"calendar.poland\"][\"events\"]
+        %} {{ event.summary }},  {% endfor %} {% for event in today_agenda[\"calendar.kalendarz_testowy\"][\"events\"]
+        %} {{ event.summary }},  {% endfor %} {% for event in today_agenda[\"calendar.rafal_praca\"][\"events\"]
+        %} {{ event.summary }},  {% endfor %}    \nJakość powietrza {{ iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'very_bad'), 'bardzo zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'bad'), 'zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'sufficient'), 'dopuszczalna', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'moderate'), 'umiarkowana', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'good'), 'dobra', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        'very_good'), 'bardzo dobra', 'nieznana')))))) }}\nPyły PM10 {{ iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'very_bad'), 'bardzo zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'bad'), 'zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'sufficient'), 'dopuszczalna', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'moderate'), 'umiarkowana', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'good'), 'dobra', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm10_index',
+        'very_good'), 'bardzo dobra', 'nieznana')))))) }}\nPyły PM 2 i pół {{ iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'very_bad'), 'bardzo zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'bad'), 'zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'sufficient'), 'dopuszczalna', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'moderate'), 'umiarkowana', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'good'), 'dobra', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
+        'very_good'), 'bardzo dobra', 'nieznana')))))) }}"
+  mode: single
+  fields: {}
+  description: ''
+zzz_test_tts:
+  alias: ZZZ Test TTS
+  sequence:
+  - service: calendar.get_events
+    metadata: {}
+    data:
+      duration:
+        hours: 23
+        minutes: 59
+        seconds: 59
+      start_date_time: '{{ today_at().strftime(''%Y-%m-%d %H:%M'') }}'
+    response_variable: today_agenda
+    target:
+      label_id: kalendarze
+  - service: tts.speak
+    target:
+      entity_id: tts.google_pl_pl
+    data:
+      media_player_entity_id: media_player.googlehome5990
+      message: "Test głosowy.\n{% for bus in state_attr('sensor.impk_damrota', 'list')
+        %}\n  {% set departure_time = today_at(bus.departure) %}\n  {% if (now() +
+        as_timedelta(\"PT20M\") > departure_time) and (departure_time > now()) %}\n
+        \   {% set departure_in_minutes = ((departure_time - now()).seconds / 60)
+        | round %}\n    Linia {{ bus.line }}, odjazd za {{ departure_in_minutes }}
+        minut\n  {% endif %}\n{% endfor %}"
+  mode: single
+  fields: {}
+  description: ''

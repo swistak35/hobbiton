@@ -69,3 +69,27 @@
       person_entity: person.rafal
       zone_entity: zone.przedszkole
       notify_device: 60d289e8a185f53746d694b216b4808b
+- id: '1719173929529'
+  alias: Przeczytaj poranny status po zeskanowaniu tagu
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 37ac15b0-c3a9-464c-9be5-6b4c225e49f5
+  condition: []
+  action:
+  - service: script.poranny_status
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1719173980386'
+  alias: Przeczytaj wieczorny status po zeskanowaniu tagu
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 52646e93-adcb-42b9-8c6d-dd7f49085289
+  condition: []
+  action:
+  - service: script.gadanie
+    metadata: {}
+    data: {}
+  mode: single
