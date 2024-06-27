@@ -61,7 +61,7 @@
       message: Rafal wchodzi do przedszkola
   mode: single
 - id: '1707756092607'
-  alias: Pow rafal wychodzi z przedszkola
+  alias: Powiadomienie do Rafała jak Rafał wychodzi z przedszkola
   description: ''
   use_blueprint:
     path: homeassistant/notify_leaving_zone.yaml
@@ -69,6 +69,15 @@
       person_entity: person.rafal
       zone_entity: zone.przedszkole
       notify_device: 60d289e8a185f53746d694b216b4808b
+- id: '1713873043917'
+  alias: Powiadomienie do Rafała jak Emilka wychodzi z przedszkola
+  description: ''
+  use_blueprint:
+    path: homeassistant/notify_leaving_zone.yaml
+    input:
+      zone_entity: zone.przedszkole
+      notify_device: 60d289e8a185f53746d694b216b4808b
+      person_entity: person.emilka
 - id: '1719173929529'
   alias: Przeczytaj poranny status po zeskanowaniu tagu
   description: ''
