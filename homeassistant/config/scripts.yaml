@@ -35,6 +35,82 @@ gadanie:
         endif %}\nDobranoc."
   mode: single
   description: ''
+zwieksz_jasnosc_lampki:
+  alias: zwieksz jasnosc lampki
+  sequence:
+  - device_id: 7045779a7acd54edd95df0d05976302b
+    domain: light
+    entity_id: cc4ac43c4ba8cccd5e4119a62ad95c20
+    type: brightness_increase
+  mode: single
+pobudka_w_sypialni:
+  alias: Pobudka w sypialni
+  sequence:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.25
+    target:
+      device_id: 5532ada51d08b69b7122f02e3d242056
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.mi_smart_speaker0956
+    data:
+      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
+      media_content_type: audio/aac
+    metadata:
+      title: Radio 357
+      thumbnail: ''
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.25
+    target:
+      device_id: 33e0fd849e8181c71412271d313c829a
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome5990
+    data:
+      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
+      media_content_type: audio/aac
+    metadata:
+      title: Radio 357
+      thumbnail: ''
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+'1712856352616':
+  alias: Ustaw Łusi pokój na spanie
+  sequence:
+  - type: turn_on
+    device_id: 7045779a7acd54edd95df0d05976302b
+    entity_id: cc4ac43c4ba8cccd5e4119a62ad95c20
+    domain: light
+    brightness_pct: 1
+  mode: single
+ustaw_lusi_pokoj_na_czytanie_bajek:
+  alias: Ustaw Łusi pokój na czytanie bajek
+  sequence:
+  - type: turn_on
+    device_id: 7045779a7acd54edd95df0d05976302b
+    entity_id: cc4ac43c4ba8cccd5e4119a62ad95c20
+    domain: light
+    brightness_pct: 50
+  mode: single
 poranny_status:
   alias: Status poranny
   sequence:
@@ -78,6 +154,53 @@ poranny_status:
         'very_good'), 'bardzo dobra', 'nieznana')))))) }}"
   mode: single
   fields: {}
+  description: ''
+uruchom_radio_357:
+  alias: Uruchom Radio 357
+  fields:
+    target_device_id:
+      name: Device ID
+      selector:
+        device: {}
+      required: true
+    target_entity_id:
+      name: Entity ID
+      selector:
+        entity: {}
+      required: true
+  sequence:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.25
+    target:
+      device_id: '{{ target_device_id }}'
+  - service: media_player.play_media
+    target:
+      entity_id: '{{ target_entity_id }}'
+    data:
+      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
+      media_content_type: audio/aac
+    metadata:
+      title: Radio 357
+      thumbnail: ''
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+  description: ''
+uruchom_radio_357_kuchnia:
+  alias: Uruchom Radio 357 (kuchnia)
+  sequence:
+  - service: script.uruchom_radio_357
+    data:
+      target_device_id: 33e0fd849e8181c71412271d313c829a
+      target_entity_id: media_player.googlehome5990
   description: ''
 minutnik_generyczny:
   alias: Minutnik (generyczny)
