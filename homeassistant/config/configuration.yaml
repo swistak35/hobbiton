@@ -19,3 +19,19 @@ http:
   # You must set the trusted proxy IP address so that Home Assistant will properly accept connections
   # Set this to your NGINX machine IP, or localhost if hosted on the same machine.
   trusted_proxies: 127.0.0.1
+
+binary_sensor:
+  - platform: impk
+    monitored_conditions:
+      - news
+sensor:
+  - platform: impk
+    stops:
+      - id: 20723
+        name: "DAMROTA"
+      - id: 20724
+        name: "MOSTY WARSZAWSKIE (autobus)"
+      - id: 20629
+        name: "MOSTY WARSZAWSKIE (kierunek KROMERA)"
+      - id: 20630
+        name: "MOSTY WARSZAWSKIE (kierunek CENTRUM)"
