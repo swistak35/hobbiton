@@ -78,6 +78,30 @@
       zone_entity: zone.przedszkole
       notify_device: 60d289e8a185f53746d694b216b4808b
       person_entity: person.emilka
+- id: '1719166705957'
+  alias: Minutnik 2m w kuchni na zeskanowanie tagu
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 745cca0e-7995-47fa-9704-10f3f0a3a188
+  condition: []
+  action:
+  - service: script.minutnik_2m_kuchnia
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1719166743068'
+  alias: Minutnik 3m kuchnia
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 6ee31994-4d08-4027-85b6-1153b0275d52
+  condition: []
+  action:
+  - service: script.minutnik_3m_kuchnia
+    metadata: {}
+    data: {}
+  mode: single
 - id: '1719173929529'
   alias: Przeczytaj poranny status po zeskanowaniu tagu
   description: ''

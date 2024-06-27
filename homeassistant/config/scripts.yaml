@@ -79,6 +79,77 @@ poranny_status:
   mode: single
   fields: {}
   description: ''
+minutnik_generyczny:
+  alias: Minutnik (generyczny)
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: '{{ target_entity_id }}'
+    data:
+      media_content_id: media-source://tts/tts.google_pl_pl?message={{ time_duration.minutes
+        }}+minuty%2C+start%21&language=pl
+      media_content_type: provider
+    metadata:
+      title: Odtwórz komunikat minutnik start
+  - delay:
+      hours: '{{ time_duration.hours }}'
+      minutes: '{{ time_duration.minutes }}'
+      seconds: '{{ time_duration.seconds }}'
+      milliseconds: 0
+  - service: media_player.play_media
+    target:
+      entity_id: '{{ target_entity_id }}'
+    data:
+      media_content_id: media-source://tts/tts.google_pl_pl?message=Minutnik+{{ time_duration.minutes
+        }}+minutowy+zako%C5%84czony.&language=pl
+      media_content_type: provider
+    metadata:
+      title: Odtwórzy komunikat Minutnik zakończony.
+  description: ''
+  fields:
+    target_device_id:
+      selector:
+        device: {}
+      name: Device ID
+      required: true
+    target_entity_id:
+      selector:
+        entity: {}
+      name: Entity ID
+      required: true
+    time_duration:
+      selector:
+        duration: {}
+      name: Czas
+      required: true
+  mode: parallel
+  max: 10
+minutnik_2m_kuchnia:
+  alias: Minutnik (2m, kuchnia)
+  sequence:
+  - service: script.minutnik_generyczny
+    metadata: {}
+    data:
+      target_device_id: 33e0fd849e8181c71412271d313c829a
+      target_entity_id: media_player.googlehome5990
+      time_duration:
+        hours: 0
+        minutes: 2
+        seconds: 0
+  description: ''
+minutnik_3m_kuchnia:
+  alias: Minutnik (3m, kuchnia)
+  sequence:
+  - service: script.minutnik_generyczny
+    metadata: {}
+    data:
+      target_device_id: 33e0fd849e8181c71412271d313c829a
+      target_entity_id: media_player.googlehome5990
+      time_duration:
+        hours: 0
+        minutes: 3
+        seconds: 0
+  description: ''
 zzz_test_tts:
   alias: ZZZ Test TTS
   sequence:
