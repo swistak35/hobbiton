@@ -1,0 +1,7 @@
+# direnv — holds secrets (HA_TOKEN). Never commit or deploy.
+.envrc
+.direnv/
+
+# Pi-hole runtime data — lives only on the server.
+pihole/etc-pihole/
+pihole/etc-dnsmasq.d/
