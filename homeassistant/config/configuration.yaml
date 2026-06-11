@@ -35,3 +35,14 @@ sensor:
         name: "MOSTY WARSZAWSKIE (kierunek KROMERA)"
       - id: 20630
         name: "MOSTY WARSZAWSKIE (kierunek CENTRUM)"
+
+binary_sensor:
+  - platform: template
+    sensors:
+      evening_time:
+        unique_id: custom_binary_sensor.evening_time
+        friendly_name: Pora wieczorna
+        entity_id: sensor.time
+        value_template: >
+           {% set ct = now().hour + now().minute/60 + now().second/3600 %}
+           {{ 21 <= ct <= 25 }}

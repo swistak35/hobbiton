@@ -86,10 +86,10 @@
 - id: '1712443711172'
   alias: Pobudka (dzień roboczy)
   description: ''
-  trigger:
-  - platform: time
-    at: 07:15:00
-  condition:
+  triggers:
+  - at: 07:15:00
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - mon
@@ -97,10 +97,15 @@
     - wed
     - thu
     - fri
-  action:
-  - service: script.pobudka_w_sypialni
+  actions:
+  - metadata: {}
+    data: {}
+    action: script.pobudka_w_sypialni
+  - action: scene.turn_on
     metadata: {}
     data: {}
+    target:
+      entity_id: scene.sypialnia_dzien
   mode: single
 - id: '1712856497767'
   alias: Przygotuj Łusi pokój na spanie
@@ -128,18 +133,23 @@
 - id: '1713647398131'
   alias: Pobudka (weekend)
   description: ''
-  trigger:
-  - platform: time
-    at: 08:15:00
-  condition:
+  triggers:
+  - at: 08:15:00
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sat
     - sun
-  action:
-  - service: script.pobudka_w_sypialni
+  actions:
+  - metadata: {}
+    data: {}
+    action: script.pobudka_w_sypialni
+  - action: scene.turn_on
     metadata: {}
     data: {}
+    target:
+      entity_id: scene.sypialnia_dzien
   mode: single
 - id: '1713873043917'
   alias: Powiadomienie do Rafała jak Emilka wychodzi z przedszkola
@@ -207,6 +217,133 @@
   condition: []
   action:
   - service: script.gadanie
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1719526678190'
+  alias: TTS jak ktoś przychodzi do przedszkola
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id:
+    - person.rafal
+    - person.emilka
+    zone: zone.przedszkole
+    event: enter
+  - platform: zone
+    entity_id:
+    - person.rafal
+    - person.emilka
+    zone: zone.przedszkole
+    event: leave
+  action:
+  - service: notify.mobile_app_sm_g780g
+    metadata: {}
+    data:
+      message: '{{ trigger.to_state.name }} {{ iif(trigger.event == ''enter'', ''wchodzi
+        do'', ''wychodzi z'') }} przedszkola'
+  - service: script.tts_and_resume
+    metadata: {}
+    data:
+      media_player_entity_id: media_player.googlehome5990
+      message: '{{ trigger.to_state.name }} {{ iif(trigger.event == ''enter'', ''wchodzi
+        do'', ''wychodzi z'') }} przedszkola'
+      message_delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+      tts_volume: 0.4
+  mode: single
+- id: '1720044625678'
+  alias: Znajdź telefon na żądanie
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Where is my phone
+  condition: []
+  action:
+  - service: script.znajdz_telefon_rafal
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1742082520792'
+  alias: Poranne informacje AI po zeskanowaniu taga
+  description: ''
+  triggers:
+  - trigger: tag
+    tag_id: 096f13c1-5cae-4d0c-bce0-56916a64ef6d
+  conditions: []
+  actions:
+  - action: script.poranne_informacje_z_ai
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1742214569285'
+  alias: Wieczór
+  description: ''
+  triggers:
+  - trigger: time
+    at: '19:00:00'
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.sypialnia_spanie
+  mode: single
+- id: '1743112583938'
+  alias: Poranne informacje z AI (o konkretnej godzinie)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 07:30:00
+  conditions: []
+  actions:
+  - action: script.poranne_informacje_z_ai
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1744452919926'
+  alias: Wlacz ekran jak jest ruch
+  description: ''
+  triggers:
+  - type: motion
+    device_id: aca09b2fcb86a0bafede658d31280e03
+    entity_id: 0dea3b9f31ab427035e31543d89d6c11
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  conditions: []
+  actions:
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_on
+    enabled: false
+  - action: script.wlacz_ekran_tabletu
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1749913475898'
+  alias: Wyłącz tablet po minucie nieaktywności
+  description: ''
+  triggers:
+  - type: no_motion
+    device_id: aca09b2fcb86a0bafede658d31280e03
+    entity_id: 0dea3b9f31ab427035e31543d89d6c11
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  conditions: []
+  actions:
+  - action: script.wylacz_ekran_na_tablecie
     metadata: {}
     data: {}
   mode: single

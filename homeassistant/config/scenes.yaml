@@ -1,32 +1,3 @@
-- id: '1707650786399'
-  name: Wieczorne czytanie bajek
-  entities:
-    light.mibedsidelamp2_9c3d:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-      - color_temp
-      - hs
-      color_mode: hs
-      brightness: 127.5
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      - 27
-      - 44
-      rgb_color:
-      - 255
-      - 193
-      - 142
-      xy_color:
-      - 0.452
-      - 0.373
-      friendly_name: MiBedsideLamp2-9C3D
-      supported_features: 0
-      state: 'on'
-  metadata: {}
 - id: '1707651222600'
   name: Pokoj Lusi - off
   entities:
@@ -61,7 +32,7 @@
       - color_temp
       - hs
       color_mode: hs
-      brightness: 2.55
+      brightness: 7.65
       color_temp_kelvin:
       color_temp:
       hs_color:
@@ -70,16 +41,81 @@
       rgb_color:
       - 255
       - 193
-      - 142
+      - 143
       xy_color:
-      - 0.452
-      - 0.373
+      - 0.451
+      - 0.372
       friendly_name: MiBedsideLamp2-9C3D
       supported_features: 0
       state: 'on'
   metadata: {}
-- id: '1707911899115'
-  name: Łusia spanie
+- id: '1728508797948'
+  name: Sypialnia - spanie
+  entities:
+    light.led_strip_light:
+      supported_color_modes:
+      - xy
+      color_mode: xy
+      brightness: 66
+      hs_color:
+      - 27.08
+      - 44.314
+      rgb_color:
+      - 255
+      - 193
+      - 142
+      xy_color:
+      - 0.453
+      - 0.374
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Led strip Light
+      supported_features: 40
+      state: 'on'
+  metadata: {}
+- id: '1728509128425'
+  name: Sypialnia - nastrojowo
+  entities:
+    light.led_strip_light:
+      supported_color_modes:
+      - xy
+      color_mode: xy
+      brightness: 43
+      hs_color:
+      - 9.231
+      - 66.275
+      rgb_color:
+      - 255
+      - 112
+      - 86
+      xy_color:
+      - 0.589
+      - 0.329
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Led strip Light
+      supported_features: 40
+      state: 'on'
+  metadata: {}
+- id: '1742214418327'
+  name: Sypialnia - dzień
+  entities:
+    light.led_strip_light:
+      supported_color_modes:
+      - xy
+      color_mode:
+      brightness:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 43
+      friendly_name: Led strip Light
+      supported_features: 40
+      state: 'off'
+  metadata: {}
+- id: '1742215193787'
+  name: Pokój Łusi - czytanie bajek
   entities:
     light.mibedsidelamp2_9c3d:
       min_color_temp_kelvin: 2000
@@ -90,7 +126,7 @@
       - color_temp
       - hs
       color_mode: hs
-      brightness: 2.55
+      brightness: 255
       color_temp_kelvin:
       color_temp:
       hs_color:
@@ -99,10 +135,10 @@
       rgb_color:
       - 255
       - 193
-      - 142
+      - 143
       xy_color:
-      - 0.452
-      - 0.373
+      - 0.451
+      - 0.372
       friendly_name: MiBedsideLamp2-9C3D
       supported_features: 0
       state: 'on'

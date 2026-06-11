@@ -1,29 +1,29 @@
 poranna_pobudka:
-  alias: Poranna pobudka
+  alias: ZzZZ Pobudka w sypialni testy
   sequence:
-  - service: media_player.select_source
-    data:
+  - data:
       source: Kuchnia
     target:
       entity_id: media_player.spotify_rafal_lasocha
     enabled: true
-  - service: media_player.play_media
-    metadata: {}
+    action: media_player.select_source
+  - metadata: {}
     data:
       media_content_id: https://open.spotify.com/playlist/5xddIVAtLrZKtt4YGLM1SQ?si=YcvRqaKNTxOi043Qn4LYkg
       media_content_type: playlist
     target:
       entity_id: media_player.spotify_rafal_lasocha
     enabled: false
+    action: media_player.play_media
   mode: single
+  description: ''
 gadanie:
   alias: Status wieczorny
   sequence:
-  - service: tts.speak
-    target:
-      entity_id: tts.google_pl_pl
+  - target:
+      entity_id: tts.elevenlabs
     data:
-      media_player_entity_id: media_player.mi_smart_speaker0956
+      media_player_entity_id: media_player.mi_smart_speaker8917
       message: "Drzwi do pokoju Łucji {% if is_state('binary_sensor.czujnik_otwarcia_drzwi_opening_3',
         'on') %} są otwarte {% else %} są zamknięte {% endif %}.\nW pokoju Łucji jest
         {{states('sensor.temperatura1_temperature')}} stopni. {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
@@ -32,7 +32,8 @@ gadanie:
         'on') %} w sypialni, {% endif %} {% if is_state('binary_sensor.ewelink_ds01_opening_2',
         'on') %} u Łusi, {% endif %} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
         'on') %} w salonie, {% endif %} są otwarte.\n{% else %}\n  Okna są pozamykane.\n{%
-        endif %}\nDobranoc."
+        endif %}\nCo jutro? Nie mam pojęcia.\nDobranoc."
+    action: tts.speak
   mode: single
   description: ''
 zwieksz_jasnosc_lampki:
@@ -44,55 +45,88 @@ zwieksz_jasnosc_lampki:
     type: brightness_increase
   mode: single
 pobudka_w_sypialni:
-  alias: Pobudka w sypialni
+  alias: Poranna pobudka
   sequence:
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     metadata: {}
     data:
       volume_level: 0.25
     target:
-      device_id: 5532ada51d08b69b7122f02e3d242056
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.mi_smart_speaker0956
+      device_id:
+      - fdf1b2df4ca41697fdfc8d5b3832c96b
+      - 33e0fd849e8181c71412271d313c829a
+      - 933e9f20930a86316fbe237e61650e1a
+    enabled: false
+  - metadata: {}
     data:
-      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
-      media_content_type: audio/aac
-    metadata:
-      title: Radio 357
-      thumbnail: ''
-      media_class: music
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://radio_browser
-      - media_content_type: music
-        media_content_id: media-source://radio_browser/country/PL
-  - service: media_player.volume_set
-    metadata: {}
+      volume_level: 0.25
+    target:
+      device_id:
+      - 475f0b5d172fba91ca5424b3e0cc9371
+    action: media_player.volume_set
+    enabled: false
+  - metadata: {}
     data:
       volume_level: 0.25
     target:
       device_id: 33e0fd849e8181c71412271d313c829a
-  - service: media_player.play_media
-    target:
+    action: media_player.volume_set
+    enabled: false
+  - target:
+      entity_id: media_player.sypialnia
+    data:
+      media:
+        media_content_id: media-source://radio_browser/d377fdb9-9136-47de-a1f4-6b02a1bc7f72
+        media_content_type: audio/aac
+        metadata:
+          title: Radio 357
+          thumbnail: https://radio357.pl/wp-content/uploads/2022/04/c5399c0d-1b8e-43d5-b23b-e5cef1857856.png
+          media_class: music
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://radio_browser
+          - media_content_type: music
+            media_content_id: media-source://radio_browser/country/PL
+    action: media_player.play_media
+    enabled: false
+  - target:
       entity_id: media_player.googlehome5990
     data:
-      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
-      media_content_type: audio/aac
-    metadata:
-      title: Radio 357
-      thumbnail: ''
-      media_class: music
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://radio_browser
-      - media_content_type: music
-        media_content_id: media-source://radio_browser/country/PL
+      media:
+        media_content_id: media-source://radio_browser/d377fdb9-9136-47de-a1f4-6b02a1bc7f72
+        media_content_type: audio/aac
+        metadata:
+          title: Radio 357
+          thumbnail: https://radio357.pl/wp-content/uploads/2022/04/c5399c0d-1b8e-43d5-b23b-e5cef1857856.png
+          media_class: music
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://radio_browser
+          - media_content_type: music
+            media_content_id: media-source://radio_browser/country/PL
+    action: media_player.play_media
+    enabled: false
+  - action: script.uruchom_radio_357
+    metadata: {}
+    data:
+      target_device_id: fdf1b2df4ca41697fdfc8d5b3832c96b
+      target_entity_id: media_player.salon
+    enabled: false
+  - action: script.uruchom_radio_357_kuchnia
+    metadata: {}
+    data: {}
+    enabled: false
+  - action: script.uruchom_radio_357
+    metadata: {}
+    data:
+      target_device_id: 99df847d660a29053a2760fa455facb3
+      target_entity_id: media_player.wszystkie_glosniki
   mode: single
+  description: ''
 '1712856352616':
   alias: Ustaw Łusi pokój na spanie
   sequence:
@@ -114,8 +148,7 @@ ustaw_lusi_pokoj_na_czytanie_bajek:
 poranny_status:
   alias: Status poranny
   sequence:
-  - service: calendar.get_events
-    metadata: {}
+  - metadata: {}
     data:
       duration:
         hours: 23
@@ -125,15 +158,16 @@ poranny_status:
     response_variable: today_agenda
     target:
       label_id: kalendarze
-  - service: tts.speak
-    target:
-      entity_id: tts.google_pl_pl
+    action: calendar.get_events
+  - target:
+      entity_id: tts.elevenlabs
     data:
-      media_player_entity_id: media_player.googlehome5990
+      media_player_entity_id: media_player.mi_smart_speaker8917
       message: "Dzisiejsze wydarzenia: {% for event in today_agenda[\"calendar.poland\"][\"events\"]
-        %} {{ event.summary }},  {% endfor %} {% for event in today_agenda[\"calendar.kalendarz_testowy\"][\"events\"]
-        %} {{ event.summary }},  {% endfor %} {% for event in today_agenda[\"calendar.rafal_praca\"][\"events\"]
-        %} {{ event.summary }},  {% endfor %}    \nJakość powietrza {{ iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
+        %} {{ event.summary }}, {% endfor %} {% for event in today_agenda[\"calendar.kalendarz_testowy\"][\"events\"]
+        %} {{ event.summary }}, {% endfor %} {% for event in today_agenda[\"calendar.rafal_praca\"][\"events\"]
+        %} {{ event.summary }},  {% endfor %}    \nJakość powietrza jest teraz {{
+        iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
         'very_bad'), 'bardzo zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
         'bad'), 'zła', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
         'sufficient'), 'dopuszczalna', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index',
@@ -152,6 +186,7 @@ poranny_status:
         'moderate'), 'umiarkowana', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
         'good'), 'dobra', iif(is_state('sensor.gios_wroclaw_conrada_korzeniowskiego_pm2_5_index',
         'very_good'), 'bardzo dobra', 'nieznana')))))) }}"
+    action: tts.speak
   mode: single
   fields: {}
   description: ''
@@ -169,17 +204,16 @@ uruchom_radio_357:
         entity: {}
       required: true
   sequence:
-  - service: media_player.volume_set
-    metadata: {}
+  - metadata: {}
     data:
       volume_level: 0.25
     target:
       device_id: '{{ target_device_id }}'
-  - service: media_player.play_media
-    target:
+    action: media_player.volume_set
+  - target:
       entity_id: '{{ target_entity_id }}'
     data:
-      media_content_id: media-source://radio_browser/c7ac7dd7-3459-43f4-9380-29a326272cf9
+      media_content_id: media-source://radio_browser/d377fdb9-9136-47de-a1f4-6b02a1bc7f72
       media_content_type: audio/aac
     metadata:
       title: Radio 357
@@ -192,15 +226,16 @@ uruchom_radio_357:
         media_content_id: media-source://radio_browser
       - media_content_type: music
         media_content_id: media-source://radio_browser/country/PL
+    action: media_player.play_media
   mode: single
   description: ''
 uruchom_radio_357_kuchnia:
   alias: Uruchom Radio 357 (kuchnia)
   sequence:
-  - service: script.uruchom_radio_357
-    data:
-      target_device_id: 33e0fd849e8181c71412271d313c829a
-      target_entity_id: media_player.googlehome5990
+  - data:
+      target_device_id: 11fcd5977d671c315d15c18c811dad67
+      target_entity_id: media_player.kuchnia
+    action: script.uruchom_radio_357
   description: ''
 minutnik_generyczny:
   alias: Minutnik (generyczny)
@@ -300,4 +335,534 @@ zzz_test_tts:
         minut\n  {% endif %}\n{% endfor %}"
   mode: single
   fields: {}
+  description: ''
+tts_and_resume:
+  alias: TTS and resume
+  mode: single
+  description: ''
+  icon: mdi:account-voice
+  fields:
+    media_player_entity_id:
+      selector:
+        entity: {}
+      name: Media Player (Entity ID)
+      required: true
+    message:
+      selector:
+        text:
+      name: Message
+      required: true
+    message_delay:
+      selector:
+        duration: {}
+      name: Message Delay
+      required: true
+    tts_volume:
+      selector:
+        number:
+          min: 0
+          max: 1
+          step: 0.01
+      name: Volume
+      required: true
+  variables:
+    media_content_id: '{{ state_attr(media_player_entity_id, ''media_content_id'')
+      }}'
+    mediaplayer_volume_level: '{{ state_attr(media_player_entity_id, ''volume_level'')
+      }}'
+    mediaplayer_state: '{{ states(media_player_entity_id) }}'
+  sequence:
+  - if:
+    - condition: template
+      value_template: '{{ is_state(media_player_entity_id, ''playing'') }}'
+    then:
+    - action: media_player.media_pause
+      metadata: {}
+      data: {}
+      target:
+        entity_id: '{{ media_player_entity_id }}'
+  - data:
+      entity_id: '{{ media_player_entity_id }}'
+    action: media_player.media_pause
+    enabled: false
+  - delay: 1
+  - data:
+      entity_id: '{{ media_player_entity_id }}'
+      volume_level: '{{ tts_volume }}'
+    action: media_player.volume_set
+  - delay: 1
+  - target:
+      entity_id: tts.google_pl_pl
+    data:
+      media_player_entity_id: '{{ media_player_entity_id }}'
+      message: '{{ message }}'
+    action: tts.speak
+  - delay: '{{ message_delay }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mediaplayer_state == ''playing'' }}'
+      sequence:
+      - data:
+          entity_id: '{{ media_player_entity_id }}'
+          volume_level: '{{ mediaplayer_volume_level }}'
+        action: media_player.volume_set
+      - delay: 2
+      - data:
+          entity_id: '{{ media_player_entity_id }}'
+          media_content_id: '{{ media_content_id }}'
+          media_content_type: music
+        action: media_player.play_media
+    default:
+    - data:
+        entity_id: '{{ media_player_entity_id }}'
+      action: media_player.turn_off
+tts_and_resume_test_on_kuchnia:
+  alias: ZZZTEST TTS and resume (test on kuchnia)
+  sequence:
+  - service: script.tts_and_resume
+    metadata: {}
+    data:
+      message: Testowa wiadomość
+      message_delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+      tts_volume: 0.3
+      media_player_entity_id: media_player.googlehome5990
+  description: ''
+znajdz_telefon_rafal:
+  alias: 'Znajdź telefon: Rafał'
+  sequence:
+  - service: notify.mobile_app_sm_g780g
+    data:
+      message: TTS
+      data:
+        priority: high
+        ttl: 0
+        channel: alarm_stream
+        tts_text: Tutaj jest telefon. Tutaj jest telefon. Tutaj jest telefon. Tutaj
+          jest telefon. Tutaj jest telefon.
+  description: ''
+  icon: mdi:cellphone
+znajdz_telefon_emilka:
+  alias: 'Znajdź telefon: Emilka'
+  sequence:
+  - service: notify.mobile_app_sm_g970f
+    data:
+      message: TTS
+      data:
+        priority: high
+        ttl: 0
+        channel: alarm_stream
+        tts_text: foo bar
+  description: ''
+  icon: mdi:cellphone
+'1739524745458':
+  sequence:
+  - action: tts.speak
+    data:
+      cache: true
+      media_player_entity_id: media_player.mi_smart_speaker8917
+      message: Królestwo Kotków wzywa czarodziejkę Łucję na pomoc!
+    target:
+      entity_id: tts.elevenlabs
+  alias: Test 11labs tts
+  description: ''
+tts_and_resume_11labs:
+  sequence:
+  - if:
+    - condition: template
+      value_template: '{{ is_state(media_player_entity_id, ''playing'') }}'
+    then:
+    - action: media_player.media_pause
+      metadata: {}
+      data: {}
+      target:
+        entity_id: '{{ media_player_entity_id }}'
+  - data:
+      entity_id: '{{ media_player_entity_id }}'
+    action: media_player.media_pause
+    enabled: false
+  - delay: 1
+  - data:
+      entity_id: '{{ media_player_entity_id }}'
+      volume_level: '{{ tts_volume }}'
+    action: media_player.volume_set
+  - delay: 1
+  - target:
+      entity_id: tts.elevenlabs
+    data:
+      media_player_entity_id: '{{ media_player_entity_id }}'
+      message: '{{ message }}'
+    action: tts.speak
+  - delay: '{{ message_delay }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mediaplayer_state == ''playing'' }}'
+      sequence:
+      - data:
+          entity_id: '{{ media_player_entity_id }}'
+          volume_level: '{{ mediaplayer_volume_level }}'
+        action: media_player.volume_set
+      - delay: 2
+      - data:
+          entity_id: '{{ media_player_entity_id }}'
+          media_content_id: '{{ media_content_id }}'
+          media_content_type: music
+        action: media_player.play_media
+    default:
+    - data:
+        entity_id: '{{ media_player_entity_id }}'
+      action: media_player.turn_off
+  alias: TTS and resume (11labs)
+  mode: single
+  description: ''
+  icon: mdi:account-voice
+  fields:
+    media_player_entity_id:
+      selector:
+        entity: {}
+      name: Media Player (Entity ID)
+      required: true
+    message:
+      selector:
+        text:
+      name: Message
+      required: true
+    message_delay:
+      selector:
+        duration: {}
+      name: Message Delay
+      required: true
+    tts_volume:
+      selector:
+        number:
+          min: 0
+          max: 1
+          step: 0.01
+      name: Volume
+      required: true
+  variables:
+    media_content_id: '{{ state_attr(media_player_entity_id, ''media_content_id'')
+      }}'
+    mediaplayer_volume_level: '{{ state_attr(media_player_entity_id, ''volume_level'')
+      }}'
+    mediaplayer_state: '{{ states(media_player_entity_id) }}'
+uruchom_radio_357_salon:
+  sequence:
+  - data:
+      target_device_id: fdf1b2df4ca41697fdfc8d5b3832c96b
+      target_entity_id: media_player.salon
+    action: script.uruchom_radio_357
+  alias: Uruchom Radio 357 (salon)
+  description: ''
+uruchom_radio_ram:
+  sequence:
+  - metadata: {}
+    data:
+      volume_level: 0.25
+    target:
+      device_id: '{{ target_device_id }}'
+    action: media_player.volume_set
+  - target:
+      entity_id: '{{ target_entity_id }}'
+    data:
+      media_content_id: media-source://radio_browser/853c4ec6-b1d9-42b0-9d64-2e463796d822
+      media_content_type: audio/aac
+    metadata:
+      title: Radio 357
+      thumbnail: ''
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+    action: media_player.play_media
+  alias: Uruchom Radio RAM
+  fields:
+    target_device_id:
+      name: Device ID
+      selector:
+        device: {}
+      required: true
+    target_entity_id:
+      name: Entity ID
+      selector:
+        entity: {}
+      required: true
+  mode: single
+  description: ''
+poranne_informacje_z_ai:
+  sequence:
+  - action: calendar.get_events
+    target:
+      entity_id:
+      - calendar.lucja_lasocha
+      - calendar.rafal_lasocha_gmail_com
+      - calendar.wspolny
+      - calendar.emilia_lasocha_net
+    data:
+      start_date_time: '{{ now().replace(hour=6, minute=0, second=0).isoformat() }}'
+      end_date_time: '{{ now().replace(hour=23, minute=59, second=59).isoformat()
+        }}'
+    response_variable: calendar_events
+  - action: weather.get_forecasts
+    data:
+      type: hourly
+    response_variable: hourly_weather
+    target:
+      entity_id: weather.openweathermap
+  - action: google_generative_ai_conversation.generate_content
+    data:
+      prompt: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
+        bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
+        zamieszczę wszystkie informacje które musisz nam przekazać.\n- Powitaj nowy
+        dzień.\n- Dzisiaj jest {{ states('sensor.dzien_tygodnia') }}.\n- Średnia temperatura
+        w domu to {{ states('sensor.srednia_temperatura') }}.\n{% if hourly_weather
+        %}\n  {% set current_weather = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+        | first %}\n  {% set weather_next = hourly_weather[\"weather.openweathermap\"][\"forecast\"][1]
+        %}\n  {% set weather12h = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+        | slice(4) | first %}\n- Aktualna temperatura na zewnątrz to {{ current_weather['temperature']
+        | round }} stopni celsjusza.\n- Aktualna odczuwalna temperatura na zewnątrz
+        to {{ current_weather['apparent_temperature'] | round }} stopni celsjusza.
+        * Maksymalna temperatura w ciągu dnia to {{ weather12h | map(attribute=\"temperature\")
+        | max | round }} * Aktualna pogoda na zewnątrz to to {{ current_weather['condition']
+        }}. * Szansa na opady dzisiaj to do {{ weather12h | map(attribute=\"precipitation_probability\")
+        | max }}%. * Szansa na opady w ciągu najbliższych dwóch godzin to {{ [current_weather.precipitation_probability,
+        weather_next.precipitation_probability] | max }}%. {% endif %} * Stan powietrza
+        jest {{ state_translated('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index')
+        }}\n\nPoniżej jest lista wydarzeń. Jeżeli jest coś wspólnego, zgrupuj to.\n{%
+        if calendar_events %}\n  {% for calendar, data in calendar_events.items()
+        %}\n    {% if calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj następujące
+        wydarzenia:\n    {% elif calendar == 'calendar.rafal_lasocha_gmail_com' %}\nRafał
+        ma dzisiaj następujące wydarzenia:\n    {% elif calendar == 'calendar.emilia_lasocha_net'
+        %}\nEmilka ma dzisiaj nastepujace wydarzenia:\n    {% endif %}\n    {% for
+        event in data.events %}\n  * {{ event.summary }} od {{ as_datetime(event.start).strftime('%I:%M
+        %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n    {% endfor
+        %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{% endif
+        %}"
+    response_variable: response_text
+    enabled: true
+  - variables:
+      response_text:
+        text: "Dzień dobry. Dzisiaj jest {{ states('sensor.dzien_tygodnia') }}.\n{%
+          if hourly_weather %}\n  {% set current_weather = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+          | first %}\n  {% set weather_next = hourly_weather[\"weather.openweathermap\"][\"forecast\"][1]
+          %}\n  {% set weather12h = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+          | slice(4) | first %}\nAktualnie na zewnątrz jest {{ current_weather['temperature']
+          | round }} stopni, odczuwalna temperatura to {{ current_weather['apparent_temperature']
+          | round }} stopni.\nTemperatura w ciągu dnia wzrośnie maksymalnie do {{
+          weather12h | map(attribute=\"temperature\") | max | round }} stopni.\nAktualna
+          pogoda na zewnątrz to {{ current_weather['condition'] }}.\nSzansa na opady
+          w ciągu dnia to do {{ weather12h | map(attribute=\"precipitation_probability\")
+          | max }}%. Szansa na opady w ciągu najbliższych dwóch godzin to {{ [current_weather.precipitation_probability,
+          weather_next.precipitation_probability] | max }}%. {% endif %}\nStan powietrza
+          jest {{ state_translated('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index')
+          }}.\n{% if calendar_events %}\n  {% for calendar, data in calendar_events.items()
+          %}\n    {% if calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj
+          następujące wydarzenia:\n    {% elif calendar == 'calendar.rafal_lasocha_gmail_com'
+          %}\nRafał ma dzisiaj następujące wydarzenia:\n    {% elif calendar == 'calendar.karwowska_emilia_gmail_com'
+          %}\nEmilka ma dzisiaj mastepujace wydarzenia:\n    {% endif %}\n    {% for
+          event in data.events %}\n  * {{ event.summary }} od {{ as_datetime(event.start).strftime('%I:%M
+          %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n  * Basen\n
+          \   {% endfor %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{%
+          endif %}"
+    enabled: false
+  - action: tts.speak
+    metadata: {}
+    data:
+      cache: true
+      media_player_entity_id: media_player.salon
+      message: '{{ response_text[''text''] }}'
+    target:
+      entity_id: tts.elevenlabs
+    enabled: false
+  - action: script.tts_and_resume
+    metadata: {}
+    data:
+      media_player_entity_id: media_player.wszystkie_glosniki
+      message: '{{ response_text[''text''] }}'
+      tts_volume: 0.4
+      message_delay:
+        hours: 0
+        minutes: 1
+        seconds: 15
+    enabled: true
+  alias: Poranne informacje z AI
+  description: ''
+status_wieczorny:
+  sequence:
+  - action: calendar.get_events
+    target:
+      entity_id:
+      - calendar.lucja_lasocha
+      - calendar.rafal_lasocha_gmail_com
+      - calendar.wspolny
+    data:
+      start_date_time: '{{ (now()+timedelta(days=1)).replace(hour=6, minute=0, second=0).isoformat()
+        }}'
+      end_date_time: '{{ (now()+timedelta(days=1)).replace(hour=23, minute=59, second=59).isoformat()
+        }}'
+    response_variable: calendar_events
+  - action: weather.get_forecasts
+    data:
+      type: hourly
+    response_variable: hourly_weather
+    target:
+      entity_id: weather.openweathermap
+  - action: google_generative_ai_conversation.generate_content
+    data:
+      prompt: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
+        bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
+        zamieszczę wszystkie informacje które musisz nam przekazać.\n- Średnia temperatura
+        w domu to {{ states('sensor.srednia_temperatura') }}.\n- W pokoju Łucji jest
+        {{states('sensor.temperatura1_temperature')}} stopni.\n- Drzwi do pokoju Łucji
+        {% if is_state('binary_sensor.czujnik_otwarcia_drzwi_opening_3', 'on') %}
+        są otwarte {% else %} są zamknięte {% endif %}.\n\n- Okno w sypialni jest
+        {{ state_translated('binary_sensor.czujnik_otwarcia_okna_opening_2_NIE WIEM
+        CZY TO DOBRY') }} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
+        'on') or is_state('binary_sensor.ewelink_ds01_opening_2', 'on') or is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
+        'on') %}\n  Okna {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
+        'on') %} w sypialni, {% endif %} {% if is_state('binary_sensor.ewelink_ds01_opening_2',
+        'on') %} u Łusi, {% endif %} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
+        'on') %} w salonie, {% endif %} są otwarte.\n{% else %}\n  Okna są pozamykane.\n{%
+        endif %}\n- Życz nam dobranoc.\n\n\n{% if hourly_weather %}\n  {% set current_weather
+        = hourly_weather[\"weather.openweathermap\"][\"forecast\"] | first %}\n  {%
+        set weather_next = hourly_weather[\"weather.openweathermap\"][\"forecast\"][1]
+        %}\n  {% set weather12h = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+        | slice(4) | first %}\n- Aktualna temperatura na zewnątrz to {{ current_weather['temperature']
+        | round }} stopni celsjusza.\n- Aktualna odczuwalna temperatura na zewnątrz
+        to {{ current_weather['apparent_temperature'] | round }} stopni celsjusza.
+        * Maksymalna temperatura w ciągu dnia to {{ weather12h | map(attribute=\"temperature\")
+        | max | round }} * Aktualna pogoda na zewnątrz to to {{ current_weather['condition']
+        }}. * Szansa na opady dzisiaj to do {{ weather12h | map(attribute=\"precipitation_probability\")
+        | max }}%. * Szansa na opady w ciągu najbliższych dwóch godzin to {{ [current_weather.precipitation_probability,
+        weather_next.precipitation_probability] | max }}%. {% endif %} * Stan powietrza
+        jest {{ state_translated('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index')
+        }}\n\n\n{% if calendar_events %}\n  {% for calendar, data in calendar_events.items()
+        %}\n    {% if calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj następujące
+        wydarzenia:\n    {% elif calendar == 'calendar.rafal_lasocha_gmail_com' %}\nRafał
+        ma dzisiaj następujące wydarzenia:\n    {% elif calendar == 'calendar.karwowska_emilia_gmail_com'
+        %}\nEmilka ma dzisiaj mastepujace wydarzenia:\n    {% endif %}\n    {% for
+        event in data.events %}\n  * {{ event.summary }} od {{ as_datetime(event.start).strftime('%I:%M
+        %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n    {% endfor
+        %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{% endif
+        %}"
+    response_variable: response_text
+    enabled: true
+  - variables:
+      response_text:
+        text: "Dzień dobry. Dzisiaj jest {{ states('sensor.dzien_tygodnia') }}.\n{%
+          if hourly_weather %}\n  {% set current_weather = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+          | first %}\n  {% set weather_next = hourly_weather[\"weather.openweathermap\"][\"forecast\"][1]
+          %}\n  {% set weather12h = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+          | slice(4) | first %}\nAktualnie na zewnątrz jest {{ current_weather['temperature']
+          | round }} stopni, odczuwalna temperatura to {{ current_weather['apparent_temperature']
+          | round }} stopni.\nTemperatura w ciągu dnia wzrośnie maksymalnie do {{
+          weather12h | map(attribute=\"temperature\") | max | round }} stopni.\nAktualna
+          pogoda na zewnątrz to {{ current_weather['condition'] }}.\nSzansa na opady
+          w ciągu dnia to do {{ weather12h | map(attribute=\"precipitation_probability\")
+          | max }}%. Szansa na opady w ciągu najbliższych dwóch godzin to {{ [current_weather.precipitation_probability,
+          weather_next.precipitation_probability] | max }}%. {% endif %}\nStan powietrza
+          jest {{ state_translated('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index')
+          }}.\n{% if calendar_events %}\n  {% for calendar, data in calendar_events.items()
+          %}\n    {% if calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj
+          następujące wydarzenia:\n    {% elif calendar == 'calendar.rafal_lasocha_gmail_com'
+          %}\nRafał ma dzisiaj następujące wydarzenia:\n    {% elif calendar == 'calendar.karwowska_emilia_gmail_com'
+          %}\nEmilka ma dzisiaj mastepujace wydarzenia:\n    {% endif %}\n    {% for
+          event in data.events %}\n  * {{ event.summary }} od {{ as_datetime(event.start).strftime('%I:%M
+          %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n  * Basen\n
+          \   {% endfor %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{%
+          endif %}"
+    enabled: false
+  - action: tts.speak
+    metadata: {}
+    data:
+      cache: true
+      media_player_entity_id: media_player.salon
+      message: '{{ response_text[''text''] }}'
+    target:
+      entity_id: tts.elevenlabs
+    enabled: false
+  - action: script.tts_and_resume_11labs
+    metadata: {}
+    data:
+      media_player_entity_id: media_player.mi_smart_speaker8917
+      message: '{{ response_text[''text''] }}'
+      tts_volume: 0.25
+      message_delay:
+        hours: 0
+        minutes: 0
+        seconds: 30
+    enabled: true
+  alias: Status wieczorny
+  description: ''
+wlacz_ekran_na_tablecie:
+  sequence:
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_on
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_off_timeout
+    data:
+      command: 1800000
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_activity
+    data:
+      intent_package_name: io.homeassistant.companion.android
+      intent_action: android.intent.action.VIEW
+      intent_uri: homeassistant://dashboard-testy/glowny
+    enabled: false
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_webview
+    data:
+      command: /dashboard-testy/glowny
+  alias: Włącz ekran tabletu i HA
+  description: ''
+wylacz_ekran_na_tablecie:
+  sequence:
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_off_timeout
+    data:
+      command: 15000
+  alias: Wyłącz ekran na tablecie
+  description: ''
+wlacz_ekran_tabletu:
+  sequence:
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_on
+  - device_id: 5afafc3a7174b9a3484a48bda1d5df76
+    domain: mobile_app
+    type: notify
+    message: command_screen_off_timeout
+    data:
+      command: 1800000
+  alias: Włącz ekran tabletu
+  description: ''
+zzz_testy:
+  sequence:
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media_content_type: PLAYLIST
+      media_content_id: '{ "playlist_name": "Łusi ulubione", "shuffle": "1" }'
+    target:
+      device_id: fdf1b2df4ca41697fdfc8d5b3832c96b
+  alias: ZZZ Testy
   description: ''
