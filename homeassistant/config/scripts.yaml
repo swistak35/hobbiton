@@ -604,8 +604,8 @@ poranne_informacje_z_ai:
       entity_id:
       - calendar.lucja_lasocha
       - calendar.rafal_lasocha_gmail_com
-      - calendar.wspolny
       - calendar.emilia_lasocha_net
+      - calendar.okazje_i_uroczystosci
     data:
       start_date_time: '{{ now().replace(hour=6, minute=0, second=0).isoformat() }}'
       end_date_time: '{{ now().replace(hour=23, minute=59, second=59).isoformat()
@@ -636,9 +636,13 @@ poranne_informacje_z_ai:
         | max }}%. * Szansa na opady w ciągu najbliższych dwóch godzin to {{ [current_weather.precipitation_probability,
         weather_next.precipitation_probability] | max }}%. {% endif %} * Stan powietrza
         jest {{ state_translated('sensor.gios_wroclaw_conrada_korzeniowskiego_air_quality_index')
-        }}\n\nPoniżej jest lista wydarzeń. Jeżeli jest coś wspólnego, zgrupuj to.\n{%
-        if calendar_events %}\n  {% for calendar, data in calendar_events.items()
-        %}\n    {% if calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj następujące
+        }}\n\nNie opowiadaj o procentach, tylko powiedz z grubsza jak będzie wyglądać
+        dzisiaj pogoda. Pogoda na najbliższe dwie godziny i na cały dzień jest nam
+        potrzebna z tego względu że bierzemy ją pod uwagę ubierając Łucję do przedszkola.\n\nPoniżej
+        jest lista wydarzeń. Jeżeli jest coś wspólnego, zgrupuj to.\n{% if calendar_events
+        %}\n  {% for calendar, data in calendar_events.items() %}\n    {% if calendar
+        == 'calendar.okazje_i_uroczystosci' %}\nDzisiaj są następujące Okazje i Wydarzenia:\n
+        \   {% elif calendar == 'calendar.lucja_lasocha' %}\nŁucja ma dzisiaj następujące
         wydarzenia:\n    {% elif calendar == 'calendar.rafal_lasocha_gmail_com' %}\nRafał
         ma dzisiaj następujące wydarzenia:\n    {% elif calendar == 'calendar.emilia_lasocha_net'
         %}\nEmilka ma dzisiaj nastepujace wydarzenia:\n    {% endif %}\n    {% for
