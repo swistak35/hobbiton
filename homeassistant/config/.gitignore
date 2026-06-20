@@ -6,6 +6,16 @@
 !.gitignore
 !*.md
 
+# Custom integrations: HACS-installed ones (impk, …) stay ignored; only our own
+# hand-written ones are version-controlled. Whitelist each one explicitly.
+# `!custom_components/` lets git descend into the dir (without it the lines below
+# have no effect); the two per-plugin lines re-include the dir + all its contents.
+!custom_components/
+!custom_components/spacerek/
+!custom_components/spacerek/**
+# …but never the Python bytecode caches.
+custom_components/spacerek/**/__pycache__/
+
 # Ignore folders.
 .storage
 .cloud

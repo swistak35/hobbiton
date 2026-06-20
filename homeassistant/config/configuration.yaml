@@ -46,3 +46,12 @@ binary_sensor:
         value_template: >
            {% set ct = now().hour + now().minute/60 + now().second/3600 %}
            {{ 21 <= ct <= 25 }}
+
+# Spacerek — rekomendacje ubioru dla dzieci (custom_components/spacerek).
+# Źródła pogody mają domyślne wartości (OpenWeatherMap + GIOŚ) i można je pominąć.
+spacerek:
+  children:
+    - name: Filip
+      birthdate: "2026-04-18"
+    - name: Łucja
+      birthdate: "2020-10-07"

@@ -1,0 +1,11 @@
+{
+  "domain": "spacerek",
+  "name": "Spacerek",
+  "version": "0.1.0",
+  "documentation": "https://github.com/swistak35/hobbiton",
+  "issue_tracker": "https://github.com/swistak35/hobbiton/issues",
+  "dependencies": ["weather"],
+  "codeowners": ["@swistak35"],
+  "iot_class": "calculated",
+  "integration_type": "service"
+}

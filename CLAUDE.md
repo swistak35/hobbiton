@@ -23,6 +23,7 @@ Syncing is done with **`./sync.sh`** at the repo root. It mirrors the whole repo
 ./sync.sh deploy   # lint YAML → rsync local→server → (for HA changes) validate → reload HA
 ./sync.sh pull     # rsync server→local to capture UI-made changes (mainly Home Assistant)
 ./sync.sh check    # validate the HA config currently on the server (read-only)
+./sync.sh restart  # full HA restart via its API (reloads custom-integration code); waits until back
 ```
 
 `deploy`/`pull` print the change list and confirm before applying (`-y` to skip). When a `deploy` touches `homeassistant/config/`, it validates via the HA API first and **aborts the reload if invalid**, so a broken config never goes live; for Pi-hole / autossh / HA-compose changes it prints the manual activation step (rsync gets the files there but can't restart those services). Commit + push to GitHub (`origin`) yourself whenever you want a checkpoint — decoupled from deploying.
@@ -31,7 +32,8 @@ Requires a Home Assistant **long-lived access token** in `$HA_TOKEN`, kept in th
 
 **Caveats / fallbacks:**
 
-- HA `reload_all` won't pick up *new* integrations/platforms (`configuration.yaml` structural changes) or `docker-compose.yml` changes — those need a container restart: `ssh hobbiton 'cd hobbiton/homeassistant && docker-compose up -d'`. `deploy` prints this when those files change.
+- HA `reload_all` (what `deploy` runs) won't pick up *new* integrations/platforms or changed **custom-integration Python** (`custom_components/`) — those load only at a process boot. Use **`./sync.sh restart`**: it restarts HA via its own API (`homeassistant.restart`, no ssh/sudo/docker), relying on `restart: unless-stopped` so the container is recreated the instant the process exits. It validates config first and waits for HA to come back. Typical flow for integration work: `./sync.sh deploy && ./sync.sh restart`.
+- **`docker-compose.yml` changes** (image tag, volumes, devices) are the exception `restart` can NOT apply — it restarts HA *inside* the existing container. Those need the container recreated on the server: `ssh hobbiton 'cd hobbiton/homeassistant && docker-compose up -d'` (needs sudo/docker access). `deploy` prints this when `docker-compose.yml` changes.
 - The `hobbiton` git remote still has `receive.denyCurrentBranch=updateInstead`, so `git push hobbiton` deploys *committed* content to the server working tree — a fallback if `sync.sh` is unavailable.
 - The mirror has no merge step: **`pull` before hand-editing locally.** In practice the two sides own different files (UI owns automations/scripts/scenes on the server; you own `configuration.yaml`/compose locally) and both commands show a diff + confirm, so a clash is visible, not silent.
 

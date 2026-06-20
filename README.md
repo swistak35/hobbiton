@@ -17,3 +17,7 @@ systemctl restart systemd-resolved
 
 sudo docker-compose up -d
 ```
+
+## Autossh
+
+`sudo apt install autossh`

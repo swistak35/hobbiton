@@ -1,0 +1,13 @@
+[Unit]
+Description=Keep a tunnel to 'kaylee.mippit.pl' to expose service from localhost:8123
+After=network-online.target
+
+[Service]
+Type=forking
+User=autotunnel
+ExecStart=/usr/bin/autossh -f -M 8124 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -N -R 33100:localhost:8123 autotunnel_swistak35@kaylee.mippit.pl
+ExecStop=/usr/bin/pkill -9 -u autotunnel
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

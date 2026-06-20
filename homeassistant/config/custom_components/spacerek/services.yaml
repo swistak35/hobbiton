@@ -1,0 +1,56 @@
+recommend:
+  name: Poleć ubranie
+  description: >-
+    Zwraca rekomendację ubioru dla dziecka na dany rodzaj wyjścia
+    (warstwy, akcesoria, uwagi) na podstawie aktualnej pogody.
+  fields:
+    child:
+      name: Dziecko
+      description: Imię dziecka. Puste = wszystkie dzieci.
+      required: false
+      example: Filip
+      selector:
+        text:
+    activity:
+      name: Rodzaj wyjścia
+      description: Typ aktywności na zewnątrz.
+      required: true
+      selector:
+        select:
+          options:
+            - { value: spacer, label: Spacer }
+            - { value: nosidlo, label: Nosidło / chusta }
+            - { value: wozek_spacerowka, label: Wózek spacerowy }
+            - { value: wozek_gondola, label: Wózek (gondola) }
+            - { value: samochod, label: Samochód }
+            - { value: przedszkole, label: Przedszkole (cały dzień) }
+    day:
+      name: Dzień
+      description: Bazuj na prognozie na dziś czy na jutro.
+      required: false
+      default: today
+      selector:
+        select:
+          options:
+            - { value: today, label: Dziś }
+            - { value: tomorrow, label: Jutro }
+    temperature:
+      name: Temperatura (test)
+      description: Wymuszenie temperatury – do testów scenariuszy.
+      required: false
+      selector:
+        number:
+          min: -30
+          max: 45
+          step: 0.5
+          unit_of_measurement: "°C"
+    feels_like:
+      name: Temperatura odczuwalna (test)
+      description: Wymuszenie temperatury odczuwalnej – do testów scenariuszy.
+      required: false
+      selector:
+        number:
+          min: -40
+          max: 50
+          step: 0.5
+          unit_of_measurement: "°C"

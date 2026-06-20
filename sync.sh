@@ -6,6 +6,7 @@
 #   ./sync.sh deploy    Lint YAML → rsync local→server → (for HA changes) validate → reload.
 #   ./sync.sh pull      rsync server→local to capture UI-made changes (mainly Home Assistant).
 #   ./sync.sh check     Validate the Home Assistant config currently on the server (read-only).
+#   ./sync.sh restart   Restart HA via its API (reloads custom-integration code); waits until back.
 #
 # Transport is rsync over `ssh hobbiton`, scoped to the files git would track
 # (tracked + untracked-but-not-ignored), so secrets (.envrc), Pi-hole runtime
@@ -81,6 +82,44 @@ reload() {
   echo "  ✓ reloaded"
 }
 
+# True while HA's REST API answers. With network_mode: host the port simply
+# stops listening while the process is down, so this flips false→true cleanly.
+ha_up() { curl -fsS --max-time 4 "$HA_URL/api/" -H "Authorization: Bearer $HA_TOKEN" >/dev/null 2>&1; }
+
+# Full restart of the Home Assistant *process* via its own API — no ssh/sudo/
+# docker needed. `restart: unless-stopped` in docker-compose.yml means the
+# container is recreated the moment the process exits, so this is a real boot
+# that reloads custom-integration Python (which reload_all can NOT do).
+# NOTE: this restarts HA *inside* the existing container; it does NOT apply
+# docker-compose.yml changes (image tag, volumes, devices) — those still need
+# `docker-compose up -d` on the server.
+restart() {
+  require_token
+  # One call validates token + reachability + config; bail cleanly if any fail.
+  check || die "config invalid or HA unreachable — NOT restarting; running instance unaffected"
+  confirm "Restart Home Assistant now? (brief downtime for automations/UI)" || die "aborted"
+
+  echo "› restarting Home Assistant (homeassistant.restart via API)…"
+  # The call usually returns 200, but HA may tear down before replying, so a
+  # failed POST here is expected — the down→up wait below is the real proof.
+  api POST /api/services/homeassistant/restart >/dev/null 2>&1 || true
+
+  local t0=$SECONDS down=0
+  printf '  shutting down'
+  while [ $((SECONDS - t0)) -lt 60 ]; do
+    ha_up || { down=1; break; }
+    printf '.'; sleep 3
+  done
+  [ "$down" = 1 ] && printf ' ok\n' || printf ' (no downtime observed; continuing)\n'
+
+  printf '  coming back up'
+  while [ $((SECONDS - t0)) -lt 300 ]; do
+    if ha_up; then printf ' ✓ up (~%ss)\n' "$((SECONDS - t0))"; return 0; fi
+    printf '.'; sleep 4
+  done
+  die "HA did not come back within 300s — check the server"
+}
+
 rsync_files() { # rsync_files SRC DEST [extra opts...]
   local src="$1" dest="$2"; shift 2
   rsync "${RSYNC_OPTS[@]}" "$@" --files-from=<(manifest) "$src" "$dest"
@@ -135,10 +174,11 @@ main() {
   for arg in "$@"; do case "$arg" in -y|--yes) ASSUME_YES=1 ;; esac; done
   case "$cmd" in
     diff)   c="$(changeset "$REPO_ROOT/" "$SSH_HOST:$REMOTE_DIR/")"; echo "${c:-(in sync — server matches local)}" ;;
-    deploy) deploy ;;
-    pull)   pull ;;
-    check)  check ;;
-    *) sed -n '3,15p' "$0"; exit 1 ;;
+    deploy)  deploy ;;
+    pull)    pull ;;
+    check)   check ;;
+    restart) restart ;;
+    *) sed -n '3,17p' "$0"; exit 1 ;;
   esac
 }
 
