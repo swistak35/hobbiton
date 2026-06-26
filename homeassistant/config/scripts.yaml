@@ -621,12 +621,12 @@ poranne_informacje_z_ai:
     data:
       task_name: Asystent domowy HA
       entity_id: ai_task.google_ai_task
-      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
-        bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
-        zamieszczę wszystkie informacje które musisz nam przekazać.\n- Powitaj nowy
-        dzień.\n- Dzisiaj jest {{ states('sensor.dzien_tygodnia') }}.\n- Średnia temperatura
-        w domu to {{ states('sensor.srednia_temperatura') }}.\n{% if hourly_weather
-        %}\n  {% set current_weather = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
+      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi
+        opcji, bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się
+        profesjonalnie.\nPoniżej zamieszczę wszystkie informacje które musisz nam
+        przekazać.\n- Powitaj nowy dzień.\n- Dzisiaj jest {{ states('sensor.dzien_tygodnia')
+        }}.\n- Średnia temperatura w domu to {{ states('sensor.srednia_temperatura')
+        }}.\n{% if hourly_weather %}\n  {% set current_weather = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
         | first %}\n  {% set weather_next = hourly_weather[\"weather.openweathermap\"][\"forecast\"][1]
         %}\n  {% set weather12h = hourly_weather[\"weather.openweathermap\"][\"forecast\"]
         | slice(4) | first %}\n- Aktualna temperatura na zewnątrz to {{ current_weather['temperature']
@@ -729,15 +729,15 @@ status_wieczorny:
     data:
       task_name: Asystent domowy HA
       entity_id: ai_task.google_ai_task
-      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
-        bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
-        zamieszczę wszystkie informacje które musisz nam przekazać.\n- Średnia temperatura
-        w domu to {{ states('sensor.srednia_temperatura') }}.\n- W pokoju Łucji jest
-        {{states('sensor.temperatura1_temperature')}} stopni.\n- Drzwi do pokoju Łucji
-        {% if is_state('binary_sensor.czujnik_otwarcia_drzwi_opening_3', 'on') %}
-        są otwarte {% else %} są zamknięte {% endif %}.\n\n- Okno w sypialni jest
-        {{ state_translated('binary_sensor.czujnik_otwarcia_okna_opening_2_NIE WIEM
-        CZY TO DOBRY') }} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
+      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi
+        opcji, bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się
+        profesjonalnie.\nPoniżej zamieszczę wszystkie informacje które musisz nam
+        przekazać.\n- Średnia temperatura w domu to {{ states('sensor.srednia_temperatura')
+        }}.\n- W pokoju Łucji jest {{states('sensor.temperatura1_temperature')}} stopni.\n-
+        Drzwi do pokoju Łucji {% if is_state('binary_sensor.czujnik_otwarcia_drzwi_opening_3',
+        'on') %} są otwarte {% else %} są zamknięte {% endif %}.\n\n- Okno w sypialni
+        jest {{ state_translated('binary_sensor.czujnik_otwarcia_okna_opening_2_NIE
+        WIEM CZY TO DOBRY') }} {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
         'on') or is_state('binary_sensor.ewelink_ds01_opening_2', 'on') or is_state('binary_sensor.czujnik_otwarcia_okna_opening_2',
         'on') %}\n  Okna {% if is_state('binary_sensor.czujnik_otwarcia_okna_opening_3',
         'on') %} w sypialni, {% endif %} {% if is_state('binary_sensor.ewelink_ds01_opening_2',
