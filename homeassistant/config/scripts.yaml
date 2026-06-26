@@ -617,9 +617,11 @@ poranne_informacje_z_ai:
     response_variable: hourly_weather
     target:
       entity_id: weather.openweathermap
-  - action: google_generative_ai_conversation.generate_content
+  - action: ai_task.generate_data
     data:
-      prompt: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
+      task_name: Asystent domowy HA
+      entity_id: ai_task.google_ai_task
+      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
         bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
         zamieszczę wszystkie informacje które musisz nam przekazać.\n- Powitaj nowy
         dzień.\n- Dzisiaj jest {{ states('sensor.dzien_tygodnia') }}.\n- Średnia temperatura
@@ -650,7 +652,11 @@ poranne_informacje_z_ai:
         %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n    {% endfor
         %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{% endif
         %}"
-    response_variable: response_text
+    response_variable: ai_response
+    enabled: true
+  - variables:
+      response_text:
+        text: '{{ ai_response.data }}'
     enabled: true
   - variables:
       response_text:
@@ -719,9 +725,11 @@ status_wieczorny:
     response_variable: hourly_weather
     target:
       entity_id: weather.openweathermap
-  - action: google_generative_ai_conversation.generate_content
+  - action: ai_task.generate_data
     data:
-      prompt: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
+      task_name: Asystent domowy HA
+      entity_id: ai_task.google_ai_task
+      instructions: "Jesteś asystentem domowego systemu automatyzacji. Nie dawaj mi opcji,
         bo to co odpowiesz zostanie odtworzone na głośnikach. \nZachowuj się profesjonalnie.\nPoniżej
         zamieszczę wszystkie informacje które musisz nam przekazać.\n- Średnia temperatura
         w domu to {{ states('sensor.srednia_temperatura') }}.\n- W pokoju Łucji jest
@@ -757,7 +765,11 @@ status_wieczorny:
         %p') }} do {{ as_datetime(event.end).strftime('%I:%M %p') }}\n    {% endfor
         %}\n  {% endfor %}\n{% else %}\n  Nie ma dzisiaj żadnych wydarzeń.\n{% endif
         %}"
-    response_variable: response_text
+    response_variable: ai_response
+    enabled: true
+  - variables:
+      response_text:
+        text: '{{ ai_response.data }}'
     enabled: true
   - variables:
       response_text:
