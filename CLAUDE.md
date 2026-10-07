@@ -26,6 +26,8 @@ Syncing is done with **`./sync.sh`** at the repo root. It mirrors the whole repo
 ./sync.sh restart  # full HA restart via its API (reloads custom-integration code); waits until back
 ```
 
+**After changing and deploying something, commit those changes and push to `origin`.** Commit only your own changes. If the working tree already has unrelated uncommitted edits, stage just your hunks and leave the rest alone.
+
 `deploy`/`pull` print the change list and confirm before applying (`-y` to skip). When a `deploy` touches `homeassistant/config/`, it validates via the HA API first and **aborts the reload if invalid**, so a broken config never goes live; for Pi-hole / autossh / HA-compose changes it prints the manual activation step (rsync gets the files there but can't restart those services). Commit + push to GitHub (`origin`) yourself whenever you want a checkpoint — decoupled from deploying.
 
 Requires a Home Assistant **long-lived access token** in `$HA_TOKEN`, kept in the gitignored root `.envrc` and loaded by **direnv** (`direnv allow` once). Validation/reload go through the HA REST API (`POST /api/config/core/check_config`, then `homeassistant.reload_all`) — no Docker/sudo needed. Defaults (`HA_URL`, `SSH_HOST`, `REMOTE_DIR`) are overridable via env.

@@ -87,7 +87,7 @@
   alias: Pobudka (dzień roboczy)
   description: ''
   triggers:
-  - at: 07:15:00
+  - at: 07:10:00
     trigger: time
   conditions:
   - condition: time
@@ -283,7 +283,7 @@
   description: ''
   triggers:
   - trigger: time
-    at: '19:00:00'
+    at: '18:00:00'
   conditions: []
   actions:
   - action: scene.turn_on
