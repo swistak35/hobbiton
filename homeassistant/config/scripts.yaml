@@ -120,6 +120,16 @@ pobudka_w_sypialni:
     metadata: {}
     data: {}
     enabled: false
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.25
+    target:
+      entity_id:
+      - media_player.kuchnia
+      - media_player.sypialnia
+      - media_player.salon
+      - media_player.pokoj_lusi
   - action: script.uruchom_radio_357
     metadata: {}
     data:
