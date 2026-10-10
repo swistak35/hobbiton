@@ -134,7 +134,7 @@
   alias: Pobudka (weekend)
   description: ''
   triggers:
-  - at: 08:15:00
+  - at: 07:45:00
     trigger: time
   conditions:
   - condition: time
@@ -298,7 +298,30 @@
   triggers:
   - trigger: time
     at: 07:30:00
-  conditions: []
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  actions:
+  - action: script.poranne_informacje_z_ai
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1791619200000'
+  alias: Poranne informacje z AI (weekend)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 07:55:00
+  conditions:
+  - condition: time
+    weekday:
+    - sat
+    - sun
   actions:
   - action: script.poranne_informacje_z_ai
     metadata: {}
